@@ -1,0 +1,147 @@
+{% extends "customer/layout.html" %}
+{% load static %}
+
+{% block main %}
+<main class="main">
+
+    <div class="container-fluid">
+    <div class="row jumbotron">
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+            <h2 class="RestaurantName">Subaidah</h2>
+            <p class="RestaurantDescription">
+            A restaurant located in USM that serves delicious malaysia mamak food.
+            </p>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="container-fluid text-center padding">
+        <div class="row">
+
+        <!-- Cards - Menus -->
+        <div class="col-lg-8 col-0">
+            <h3>Menu</h3>
+            <div class="container-fluid padding">
+                <div class="row padding">
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <a href="ordering.html">
+                            <img class="card-img-top" src="{% static "customer/img/vendors/1.jpg" %}">
+                            <div class="card-body">
+                                <h4 class="card-title">Food 1</h4>
+                                <p>RM 1.00</p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <a href="ordering.html">
+                            <img class="card-img-top" src="{% static "customer/img/vendors/2.jpg" %}">
+                            <div class="card-body">
+                                <h4 class="card-title">Food 2</h4>
+                                <p>RM 1.00</p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <a href="ordering.html">
+                            <img class="card-img-top" src="{% static "customer/img/vendors/3.jpg" %}">
+                            <div class="card-body">
+                                <h4 class="card-title">Food 3</h4>
+                                <p>RM 1.00</p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <a href="ordering.html">
+                            <img class="card-img-top" src="{% static "customer/img/vendors/4.jpg" %}">
+                            <div class="card-body">
+                                <h4 class="card-title">Food 4</h4>
+                                <p>RM 1.00</p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <a href="ordering.html">
+                            <img class="card-img-top" src="{% static "customer/img/vendors/5.jpg" %}">
+                            <div class="card-body">
+                                <h4 class="card-title">Food 5</h4>
+                                <p>RM 1.00</p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <a href="ordering.html">
+                            <img class="card-img-top" src="{% static "customer/img/vendors/6.jpg" %}">
+                            <div class="card-body">
+                                <h4 class="card-title">Food 6</h4>
+                                <p>RM 1.00</p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Cart -->
+        <div class="col-lg-4 col-0">
+            <aside class="side-cart">
+                    <h4>Your Cart</h4>
+                    <form action="confirm-order.html">
+                        <div class="container cart-content">
+                            <div class="row">
+                                <div class="col-6 text-lg-left"><p>Item 1</p></div>
+                                <div class="col-6 text-lg-right"><p>RM 1.00 x1</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-lg-left"><p>Item 2</p></div>
+                                <div class="col-6 text-lg-right"><p>RM 1.00 x2</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-lg-left"><p>Item 3</p></div>
+                                <div class="col-6 text-lg-right"><p>RM 1.00 x1</p></div>
+                            </div>
+
+                            <div class="container cart-total">
+                                <div class="row">
+                                    <div class="col-6 text-lg-left"><strong><p>Subtotal: </p></strong></div>
+                                    <div class="col-6 text-lg-right"><strong><p>RM 4.00</p></strong></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 text-lg-left"><strong><p>Delivery Fee: </p></strong></div>
+                                    <div class="col-6 text-lg-right"><strong><p>RM 2.00</p></strong></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 text-lg-left"><strong><p>Total</p></strong></div>
+                                    <div class="col-6 text-lg-right"><strong><p>RM6.00</p></strong></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <input class= "btn btn-secondary" type="button" value="Checkout">
+                    </form>
+            </aside>
+        </div>
+    </div>
+    </div>
+</main>
+{% endblock %}
