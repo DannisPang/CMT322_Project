@@ -19,96 +19,20 @@
     <h3 id="vendors">List of Vendors</h3><br>
     <div class="container-fluid padding">
         <div class="row padding">
+
+            {% for restaurant in restaurants %}
             <div class="col-md-4">
                 <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/1.jpg' %}">
+                    <a href="{% url 'ordering' restaurant_id=restaurant.restaurantid %} ">
+                    <img class="card-img-top" src="{{ restaurant.image.url }}">
                     <div class="card-body">
-                        <h4 class="card-title">Vendor 1</h4>
+                        <h4 class="card-title">{{ restaurant.restaurantname }}</h4>
                     </div>
                     </a>
                 </div>
             </div>
+            {% endfor %}
 
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/2.jpg' %}">
-                    <div class="card-body">
-                        <h4 class="card-title">Vendor 2</h4>
-                    </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/3.jpg' %}">
-                    <div class="card-body">
-                        <h4 class="card-title">Vendor 3</h4>
-                    </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/4.jpg' %}">
-                    <div class="card-body">
-                        <h4 class="card-title">Vendor 4</h4>
-                    </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/5.jpg' %}">
-                    <div class="card-body">
-                        <h4 class="card-title">Vendor 5</h4>
-                    </div>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/6.jpg' %}">
-                    <div class="card-body">
-                        <h4 class="card-title">Vendor 6</h4>
-                    </div>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/7.jpg' %}">
-                    <div class="card-body">
-                        <h4 class="card-title">Vendor 7</h4>
-                    </div>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="ordering.html">
-                    <img class="card-img-top" src="{% static 'customer/img/vendors/8.jpg' %}">
-                    <div class="card-body">
-                        <h4 class="card-title">Vendor 8</h4>
-                    </div>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
     </section>

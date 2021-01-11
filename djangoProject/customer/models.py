@@ -12,9 +12,9 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     contactnum = models.CharField(db_column='ContactNum', max_length=11)  # Field name made lowercase.
     address = models.CharField(db_column='Address', max_length=50)  # Field name made lowercase.
-    ewallet = models.DecimalField(db_column='EWallet', max_digits=10, decimal_places=0, default=0)  # Field name made lowercase.
+    ewallet = models.DecimalField(db_column='EWallet', max_digits=10, decimal_places=2, default=0)  # Field name made lowercase.
     usertype = models.CharField(db_column='UserType', max_length=7)  # Field name made lowercase.
-    amountdonated = models.DecimalField(db_column='AmountDonated', max_digits=10, decimal_places=0, default=0)  # Field name made lowercase.
+    amountdonated = models.DecimalField(db_column='AmountDonated', max_digits=10, decimal_places=2, default=0)  # Field name made lowercase.
 
 
     class Meta:
@@ -40,7 +40,7 @@ class Orderitem(models.Model):
 class Orderproduct(models.Model):
     orderid = models.CharField(db_column='OrderID', primary_key=True, max_length=5)  # Field name made lowercase.
     productid = models.CharField(db_column='ProductID', max_length=5)  # Field name made lowercase.
-    amount = models.DecimalField(db_column='Amount', max_digits=2, decimal_places=0)  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=10, decimal_places=2)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -48,11 +48,11 @@ class Orderproduct(models.Model):
 
 
 class Product(models.Model):
-    productid = models.CharField(db_column='ProductID', primary_key=True, max_length=5)  # Field name made lowercase.
-    restaurantid = models.CharField(db_column='RestaurantID', max_length=5)  # Field name made lowercase.
-    productname = models.CharField(db_column='ProductName', max_length=20)  # Field name made lowercase.
-    productprice = models.DecimalField(db_column='ProductPrice', max_digits=2, decimal_places=0)  # Field name made lowercase.
-    productpic = models.CharField(db_column='ProductPic', max_length=10)  # Field name made lowercase.
+    productid = models.CharField(db_column='ProductID', primary_key=True, max_length=5)
+    restaurantid = models.CharField(db_column='RestaurantID', max_length=5)
+    productname = models.CharField(db_column='ProductName', max_length=20)
+    productprice = models.DecimalField(db_column='ProductPrice', max_digits=10, decimal_places=2)
+    productpic = models.ImageField(db_column='ProductPic', upload_to="images/products/%Y/%m/%D/")
 
     class Meta:
         managed = False
@@ -60,12 +60,12 @@ class Product(models.Model):
 
 
 class Restaurant(models.Model):
-    restaurantid = models.CharField(db_column='RestaurantID', primary_key=True, max_length=5)  # Field name made lowercase.
-    restaurantname = models.CharField(db_column='RestaurantName', max_length=25)  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=150)  # Field name made lowercase.
-    contactnum = models.CharField(db_column='ContactNum', max_length=11)  # Field name made lowercase.
-    address = models.CharField(db_column='Address', max_length=50)  # Field name made lowercase.
-    image = models.CharField(db_column='Image', max_length=10)  # Field name made lowercase.
+    restaurantid = models.CharField(db_column='RestaurantID', primary_key=True, max_length=5)
+    restaurantname = models.CharField(db_column='RestaurantName', max_length=25)
+    description = models.CharField(db_column='Description', max_length=150)
+    contactnum = models.CharField(db_column='ContactNum', max_length=11)
+    address = models.CharField(db_column='Address', max_length=255)
+    image = models.ImageField(db_column='Image', upload_to="images/restaurants/%Y/%m/%D/")
 
     class Meta:
         managed = False

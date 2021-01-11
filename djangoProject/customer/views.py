@@ -4,13 +4,16 @@ from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, render
-from .models import User
+from .models import User, Restaurant, Product
 from datetime import datetime
 from django.contrib import messages
 
 
 def index(request):
-    return render(request, "customer/index.html")
+    restaurants = Restaurant.objects.all()
+    return render(request, "customer/index.html", {
+        "restaurants": restaurants
+    })
 
 
 def donation(request):
@@ -25,9 +28,15 @@ def orders(request):
         return HttpResponseRedirect(reverse("login_view"))
 
 
-# change to each restaurant one page later
-def ordering(request):
-    return render(request, "customer/ordering.html")
+def ordering(request, restaurant_id):
+    products = Product.objects.filter(restaurantid=restaurant_id)
+    restaurant = Restaurant.objects.filter(restaurantid=restaurant_id)
+    if len(products) == 0:
+        messages.error(request, "Product not found.", "alert alert-danger")
+    return render(request, "customer/ordering.html", {
+        "products": products,
+        "restaurant": restaurant[0]
+    })
 
 
 @csrf_exempt
