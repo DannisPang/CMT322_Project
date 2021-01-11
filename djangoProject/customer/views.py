@@ -10,7 +10,6 @@ from django.contrib import messages
 
 
 def index(request):
-
     return render(request, "customer/index.html")
 
 
@@ -62,7 +61,9 @@ def register_view(request):
         email = request.POST['username']
         first_name = request.POST['fname']
         last_name = request.POST['lname']
-        userType = request.POST['user-types']
+        user_type = request.POST['user-types']
+        contact_num = request.POST['contact']
+        address = request.POST['address']
 
         # Ensure password match confirmation
         password = request.POST["password"]
@@ -81,7 +82,9 @@ def register_view(request):
             user.is_staff = False
             user.is_active = True
             user.date_joined = datetime.now()
-            user.userType = userType
+            user.contactnum = contact_num
+            user.address = address
+            user.usertype = user_type
             user.save()
         except IntegrityError as e:
             print(e)

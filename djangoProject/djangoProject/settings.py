@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydb',
+        'NAME': 'foodmarket',
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': 'localhost',
