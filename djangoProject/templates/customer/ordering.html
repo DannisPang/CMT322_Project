@@ -43,12 +43,57 @@
                             <div class="card-body">
                                 <h4 class="card-title">{{ product.productname }}</h4>
                                 <p>RM {{ product.productprice }}</p>
+                                <button class="btn btn-primary">Add to Cart</button>
                             </div>
                             </a>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
+
+                <!-- Cards - Reviews -->
+                <div class="row padding">
+                    <h4>Reviews</h4>
+                    {% for review in reviews %}
+                        <div class="card w-100 mb-4">
+                            <div class="card-body text-left">
+                                <p class="card-title">
+                                <strong>{{ review.userid.first_name }}</strong>
+                                    (Food ordered: {{ review.productid.productname }})
+                                </p>
+                                <p>Rating: {{ review.rating }} out of 5</p>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="container text-left">
+                            <p>There is no review.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Write review -->
+                {% if user.is_authenticated and products %}
+                    <form class="text-left" action="{% url 'write_review' %}" method="post">
+                    {% csrf_token %}
+                        <h5 class="mb-4">Write a Review</h5>
+                        <label for="products">Choose an item: </label>
+                        <select name="products" required>
+                        {% for product in products %}
+                            <option value="{{ product.productid }}">{{ product.productname }}</option>
+                        {% endfor %}
+                        </select>
+                        <br>
+                        <label for="rating">Rating: </label>
+                        <input type="number" name="rating" min="1" max="5" required> out of 5
+                        <input class="text-input text-input-white" type="text" name="comment" placeholder="Comment (optional)">
+                        <input name="restaurantid" value="{{ restaurant.restaurantid }}" hidden>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </form>
+
+
+                {% endif %}
+
             </div>
         </div>
 

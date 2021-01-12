@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, render
-from .models import User, Restaurant, Product
+from .models import User, Restaurant, Product, Review
 from datetime import datetime
 from django.contrib import messages
 from decimal import Decimal
@@ -51,12 +51,23 @@ def orders(request):
 
 def ordering(request, restaurant_id):
     products = Product.objects.filter(restaurantid=restaurant_id)
-    restaurant = Restaurant.objects.filter(restaurantid=restaurant_id)
+    restaurant = Restaurant.objects.filter(restaurantid=restaurant_id).first()
+
     if len(products) == 0:
         messages.error(request, "Product not found.", "alert alert-danger")
+        reviews = []
+
+    else:
+        product_list = []
+        for product in products:
+            product_list.append(product.productid)
+
+        reviews = Review.objects.filter(productid__in=product_list)
+
     return render(request, "customer/ordering.html", {
         "products": products,
-        "restaurant": restaurant[0]
+        "restaurant": restaurant,
+        "reviews": reviews
     })
 
 
@@ -126,6 +137,40 @@ def register_view(request):
         return render(request, "customer/register.html")
 
 
-@login_required()
+@login_required
 def confirm_order(request):
     return render(request, "customer/confirm-order.html")
+
+
+@login_required
+def write_review(request):
+    if request.method == "POST":
+        restaurantid = request.POST['restaurantid']
+        rating = request.POST['rating']
+        comment = request.POST['comment']
+        productid = request.POST['products']
+
+        new_review = Review.objects.create(
+            reviewid=increment_id(Review, "reviewid", "RE"),
+            productid=Product.objects.filter(productid=productid).first(),
+            rating=rating,
+            comment=comment,
+            userid=User.objects.filter(id=request.user.id).first()
+        )
+        new_review.save()
+        messages.success(request, "Thank you for your review!", "alert alert-success")
+    return HttpResponseRedirect(f'ordering/{restaurantid}')
+
+
+# generate new primary key
+def increment_id(obj, idname, letter):
+    last_data = obj.objects.all().order_by(idname).last()
+    if not last_data:
+        return letter + '001'
+
+    last_id = getattr(last_data, idname)
+    id_int = int(''.join(filter(lambda i: i.isdigit(), last_id)))  # extract digits only and convert to int
+    new_id_int = id_int + 1
+    new_id = letter + str(new_id_int).zfill(3)
+
+    return new_id
