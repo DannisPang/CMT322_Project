@@ -7,6 +7,7 @@ from django.shortcuts import HttpResponseRedirect, render
 from .models import User, Restaurant, Product
 from datetime import datetime
 from django.contrib import messages
+from decimal import Decimal
 
 
 def index(request):
@@ -18,6 +19,26 @@ def index(request):
 
 def donation(request):
     return render(request, "customer/donation.html")
+
+
+def make_donation(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            amount_donate = Decimal(request.POST['select'])
+            if amount_donate == 0.00:
+                amount_donate = Decimal(request.POST['amount'])
+            ewallet = request.user.ewallet
+            if ewallet < amount_donate:
+                messages.error(request, "Not enough E-Wallet balance. Please top up.", "alert alert-danger")
+            else:
+                request.user.ewallet = ewallet - amount_donate
+                request.user.amountdonated += amount_donate
+                request.user.save()
+                messages.success(request, "Thank you for your donation!", "alert alert-success")
+
+        return render(request, "customer/donation.html")
+    else:
+        return HttpResponseRedirect(reverse("login_view"))
 
 
 def orders(request):
