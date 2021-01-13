@@ -7,10 +7,8 @@
     <div class="container-fluid">
     <div class="row jumbotron">
         <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
-            <h2 class="RestaurantName">Subaidah</h2>
-            <p class="RestaurantDescription">
-            A restaurant located in USM that serves delicious malaysia mamak food.
-            </p>
+            <h2 class="RestaurantName">{{ restaurant.restaurantname }}</h2>
+            <p class="RestaurantDescription">{{ restaurant.description }}</p>
         </div>
     </div>
     </div>
@@ -22,82 +20,80 @@
         <!-- Cards - Menus -->
         <div class="col-lg-8 col-0">
             <h3>Menu</h3>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div {% if message.tags %} class="{{ message.tags }} {% endif %} alert-dismissible fade show"  role="alert">
+                    {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                {% endfor %}
+            {% endif %}
+
             <div class="container-fluid padding">
                 <div class="row padding">
 
+                    {% for product in products %}
                     <div class="col-md-4">
                         <div class="card">
-                            <a href="ordering.html">
-                            <img class="card-img-top" src="{% static "customer/img/vendors/1.jpg" %}">
+                            <a href="">
+                            <img class="card-img-top" src="{{ product.productpic.url }} ">
                             <div class="card-body">
-                                <h4 class="card-title">Food 1</h4>
-                                <p>RM 1.00</p>
+                                <h4 class="card-title">{{ product.productname }}</h4>
+                                <p>RM {{ product.productprice }}</p>
+                                <button class="btn btn-primary">Add to Cart</button>
                             </div>
                             </a>
                         </div>
                     </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <a href="ordering.html">
-                            <img class="card-img-top" src="{% static "customer/img/vendors/2.jpg" %}">
-                            <div class="card-body">
-                                <h4 class="card-title">Food 2</h4>
-                                <p>RM 1.00</p>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <a href="ordering.html">
-                            <img class="card-img-top" src="{% static "customer/img/vendors/3.jpg" %}">
-                            <div class="card-body">
-                                <h4 class="card-title">Food 3</h4>
-                                <p>RM 1.00</p>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <a href="ordering.html">
-                            <img class="card-img-top" src="{% static "customer/img/vendors/4.jpg" %}">
-                            <div class="card-body">
-                                <h4 class="card-title">Food 4</h4>
-                                <p>RM 1.00</p>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <a href="ordering.html">
-                            <img class="card-img-top" src="{% static "customer/img/vendors/5.jpg" %}">
-                            <div class="card-body">
-                                <h4 class="card-title">Food 5</h4>
-                                <p>RM 1.00</p>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <a href="ordering.html">
-                            <img class="card-img-top" src="{% static "customer/img/vendors/6.jpg" %}">
-                            <div class="card-body">
-                                <h4 class="card-title">Food 6</h4>
-                                <p>RM 1.00</p>
-                            </div>
-                            </a>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
+
+                <!-- Cards - Reviews -->
+                <div class="row padding">
+                    <h4>Reviews</h4>
+                    {% for review in reviews %}
+                        <div class="card w-100 mb-4">
+                            <div class="card-body text-left">
+                                <p class="card-title">
+                                <strong>{{ review.userid.first_name }}</strong>
+                                    (Food ordered: {{ review.productid.productname }})
+                                </p>
+                                <p>Rating: {{ review.rating }} out of 5</p>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="container text-left">
+                            <p>There is no review.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Write review -->
+                {% if user.is_authenticated and products %}
+                    <form class="text-left" action="{% url 'write_review' %}" method="post">
+                    {% csrf_token %}
+                        <h5 class="mb-4">Write a Review</h5>
+                        <label for="products">Choose an item: </label>
+                        <select name="products" required>
+                        {% for product in products %}
+                            <option value="{{ product.productid }}">{{ product.productname }}</option>
+                        {% endfor %}
+                        </select>
+                        <br>
+                        <label for="rating">Rating: </label>
+                        <input type="number" name="rating" min="1" max="5" required> out of 5
+                        <input class="text-input text-input-white" type="text" name="comment" placeholder="Comment (optional)">
+                        <input name="restaurantid" value="{{ restaurant.restaurantid }}" hidden>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </form>
+
+
+                {% endif %}
+
             </div>
         </div>
 
