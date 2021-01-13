@@ -10,6 +10,11 @@
 					$("#other-value").prop("disabled", true);	
 				}
 			});
+
+			$('#donate-btn').click(function (){
+			    if(!confirm("Confirm donate?"))
+			        return false;
+            })
 		});
 	</script>
     {% endblock %}
@@ -57,7 +62,7 @@
 					</div>
 				</div>
 				
-				<input class="btn btn-primary" type="submit" value="Next">
+				<input class="btn btn-primary" id="donate-btn" type="submit" value="Donate">
 			</form>
 		</div>	
 </main>	

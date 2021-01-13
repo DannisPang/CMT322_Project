@@ -56,6 +56,7 @@ class Orderitem(models.Model):
 
 
 class Orderproduct(models.Model):
+    orderproductid = models.CharField(db_column='ID', primary_key=True, max_length=5)
     orderid = models.ForeignKey(Orderitem, db_column='OrderID', on_delete=models.CASCADE)
     productid = models.ForeignKey(Product, db_column='ProductID', on_delete=models.CASCADE)
     amount = models.DecimalField(db_column='Amount', max_digits=10, decimal_places=2)
@@ -76,3 +77,5 @@ class Review(models.Model):
     class Meta:
         # managed = False
         db_table = 'review'
+
+

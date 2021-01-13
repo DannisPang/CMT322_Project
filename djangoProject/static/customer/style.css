@@ -58,7 +58,13 @@ form {
 	margin: .5rem 0;
 }
 
-.btn:hover {
+.remove-btn {
+	background-color: #42226d;
+	border: none;
+	padding: 0;
+}
+
+.btn:hover, .remove-btn:hover {
 	background-color: #6E48AA;
 }
 
