@@ -16,7 +16,7 @@ class User(AbstractUser):
 
 class Restaurant(models.Model):
     restaurantid = models.CharField(db_column='RestaurantID', primary_key=True, max_length=5)
-    ownerid = models.ForeignKey(User, db_column='OwnerID', related_name="restaurant", on_delete=models.CASCADE,
+    ownerid = models.ForeignKey(User, db_column='UserID', related_name="restaurant", on_delete=models.CASCADE,
                                 limit_choices_to={'usertype': 'V'})
     restaurantname = models.CharField(db_column='RestaurantName', max_length=25)
     description = models.CharField(db_column='Description', max_length=150)
@@ -25,8 +25,8 @@ class Restaurant(models.Model):
     image = models.ImageField(db_column='Image', upload_to="images/restaurants/%Y/%m/%D/")
 
     class Meta:
-        # managed = False
         db_table = 'restaurant'
+        get_latest_by = 'restaurantid'
 
 
 class Product(models.Model):
@@ -37,7 +37,6 @@ class Product(models.Model):
     productpic = models.ImageField(db_column='ProductPic', upload_to="images/products/%Y/%m/%D/")
 
     class Meta:
-        # managed = False
         db_table = 'product'
 
 
@@ -52,8 +51,8 @@ class Orderitem(models.Model):
     riderid = models.ForeignKey(User, db_column='RiderID', related_name="delivery", on_delete=models.PROTECT, limit_choices_to={'usertype': 'R'}, blank=True)
 
     class Meta:
-        # managed = False
         db_table = 'orderitem'
+        get_latest_by = 'orderid'
 
 
 class Orderproduct(models.Model):
@@ -64,7 +63,6 @@ class Orderproduct(models.Model):
 
     class Meta:
         unique_together = ("orderid", "productid")
-        # managed = False
         db_table = 'orderproduct'
 
 
@@ -76,7 +74,8 @@ class Review(models.Model):
     userid = models.ForeignKey(User, db_column='UserID', on_delete=models.PROTECT, limit_choices_to={'usertype': 'C'})
 
     class Meta:
-        # managed = False
         db_table = 'review'
+        get_latest_by = 'reviewid'
+
 
 

@@ -48,7 +48,8 @@ def logout_view(request):
 @csrf_exempt
 def register_view(request):
     if request.method == "POST":
-        email = request.POST['username']
+        username = request.POST['username']
+        email = request.POST['email']
         first_name = request.POST['fname']
         last_name = request.POST['lname']
         user_type = request.POST['user-types']
@@ -64,7 +65,7 @@ def register_view(request):
 
         # Create new user
         try:
-            user = User.objects.create_user(email, email, password)
+            user = User.objects.create_user(username, email, password)
             user.last_login = datetime.now()
             user.is_superuser = False
             user.first_name = first_name
