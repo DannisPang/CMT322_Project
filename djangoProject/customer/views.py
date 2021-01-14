@@ -5,10 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, render, HttpResponse
 from django.http import HttpResponseNotAllowed
-from .models import User, Restaurant, Product, Review
+from .models import User, Restaurant, Product, Review, Orderitem, Orderproduct
 from datetime import datetime
 from django.contrib import messages
 from decimal import Decimal
+import json
 
 
 def index(request):
@@ -87,12 +88,8 @@ def register_view(request):
 
 
 def donation(request):
-    return render(request, "customer/donation.html")
-
-
-def make_donation(request):
-    if request.user.is_authenticated:
-        if request.method == "POST":
+    if request.method == "POST":
+        if request.user.is_authenticated:
             amount_donate = Decimal(request.POST['select'])
             if amount_donate == 0.00:
                 amount_donate = Decimal(request.POST['amount'])
@@ -111,17 +108,44 @@ def make_donation(request):
 
                 messages.success(request, "Thank you for your donation!", "alert alert-success")
 
+            return render(request, "customer/donation.html")
+        else:
+            return HttpResponseRedirect(reverse("login_view"))
+    else:
         return render(request, "customer/donation.html")
-    else:
-        return HttpResponseRedirect(reverse("login_view"))
 
 
+@login_required
 def orders(request):
-    if request.user.is_authenticated:
-        return render(request, "customer/orders.html")
+    order_items = Orderitem.objects.filter(userid=request.user.id)
+    order_products = Orderproduct.objects.filter(orderid__in=order_items)
+
+    return render(request, "customer/orders.html", {
+        "order_items": order_items,
+        "order_products": order_products,
+    })
+
+
+@csrf_exempt
+@login_required
+def reorder(request, order_id):
+    order = Orderitem.objects.filter(orderid=order_id).first()
+    order_products = Orderproduct.objects.filter(orderid=order)
+
+    cart = request.session.get('cart')
+    if cart.get('restaurantid') == "":
+        for order_product in order_products:
+            for i in range(int(order_product.amount)):
+                add_item_to_cart(request, order.restaurantid.restaurantid, str(order_product.productid.productid))
+
+        response = {'status': 1}
+        messages.success(request, "Success! You can view your items in your cart now.", "alert alert-success")
 
     else:
-        return HttpResponseRedirect(reverse("login_view"))
+        response = {'status': 0}
+        messages.success(request, "Please clear you cart first.", "alert alert-danger")
+
+    return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 def ordering(request, restaurant_id):
@@ -148,6 +172,55 @@ def ordering(request, restaurant_id):
 
 @login_required
 def confirm_order(request):
+    if request.method == 'POST':
+        cart = request.session.get('cart')
+        total_order = Decimal(cart.get('total'))
+        restaurantid = cart.get('restaurantid')
+
+        address = request.POST['add']
+        name = request.POST['name']
+        contact = request.POST['contact']
+
+        if request.user.ewallet < total_order:
+            messages.error(request, "Not enough E-Wallet balance. Please top up.", "alert alert-danger")
+            return render(request, "customer/confirm-order.html")
+        else:
+            # create and save new orderitem
+            new_orderitem = Orderitem.objects.create(
+                orderid=increment_id(Orderitem, "orderid", 'O'),
+                restaurantid=Restaurant.objects.filter(restaurantid=restaurantid).first(),
+                userid=request.user,
+                addresstodelivery=address,
+                deliveryfee=3.00,
+                status="Pending"
+            )
+            new_orderitem.save()
+
+            for product in cart.get('products'):
+                # create and save each new orderproduct
+                new_orderproduct = Orderproduct.objects.create(
+                    orderid=new_orderitem,
+                    productid=Product.objects.filter(productid=product['productid']).first(),
+                    amount=product['qty']
+                )
+                new_orderproduct.save()
+
+            request.user.ewallet -= total_order
+            request.user.save()
+
+            # add balance to owner
+            restaurant = Restaurant.objects.filter(restaurantid=restaurantid).first()
+            owner = restaurant.ownerid
+            owner.ewallet += total_order
+            owner.save()
+
+            initialize_session(request)
+            return HttpResponseRedirect(reverse("orders"))
+    else:
+        return render(request, "customer/confirm-order.html")
+
+
+def confirm_order_view(request):
     return render(request, "customer/confirm-order.html")
 
 
@@ -168,7 +241,21 @@ def write_review(request):
         )
         new_review.save()
         messages.success(request, "Thank you for your review!", "alert alert-success")
-    return HttpResponse('ok')
+    return HttpResponseRedirect(reverse('ordering', args=[restaurantid]))
+
+
+@csrf_exempt
+@login_required
+def delete_review(request, restaurant_id, review_id):
+    if not request.is_ajax() or not request.method == "POST":
+        return HttpResponseNotAllowed(['POST'])
+
+    try:
+        review = Review.objects.filter(reviewid=review_id).first()
+        review.delete()
+        return HttpResponseRedirect(reverse("ordering", args=[restaurant_id]))
+    except:
+        return HttpResponse("An error occurred.")
 
 
 def initialize_session(request):
@@ -207,7 +294,7 @@ def add_item_to_cart(request, restaurant_id, product_id):
             product = Product.objects.filter(productid=product_id).first()
 
             new_product = {
-              "productid": product_id,
+              "productid": str(product_id),
               "productname": product.productname,
               "productprice": str(product.productprice),
               "qty": 1
@@ -233,7 +320,7 @@ def update_cart_quantity(request, product_id, qty):
     cart = request.session.get('cart')
 
     for i, product in enumerate(cart.get('products')):
-        if product.get("productid") == product_id:
+        if str(product["productid"]) == str(product_id):
             cart.get('products')[i]['qty'] = qty
             request.session.save()
             request.session.modified = True
@@ -250,7 +337,7 @@ def remove_item_from_cart(request, product_id):
     cart = request.session.get('cart')
 
     for i, product in enumerate(cart.get('products')):
-        if product.get("productid") == product_id:
+        if str(product["productid"]) == str(product_id):
             del cart.get('products')[i]
             request.session.save()
             request.session.modified = True

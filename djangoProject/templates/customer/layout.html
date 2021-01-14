@@ -58,8 +58,13 @@
 				    <a class="nav-link" href="{% url 'orders' %}">Orders</a>
 				  </li>
 				  <li class="nav-item {% if request.path == cart_url %} active {%endif%}">
-				    <a class="nav-link" href="{{ cart_url }}">Cart</a>
+				    <a class="nav-link" id="cart-link" href="{{ cart_url }}">Cart</a>
 				  </li>
+                    {% if request.user.usertype == 'A' %}
+                        <li class="nav-item">
+				    <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+				  </li>
+                    {% endif %}
                 {% endif %}
 
                     <li class="nav-item

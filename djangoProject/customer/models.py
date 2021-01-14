@@ -3,11 +3,11 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    contactnum = models.CharField(db_column='ContactNum', max_length=11)  # Field name made lowercase.
-    address = models.CharField(db_column='Address', max_length=50)  # Field name made lowercase.
-    ewallet = models.DecimalField(db_column='EWallet', max_digits=10, decimal_places=2, default=0)  # Field name made lowercase.
-    usertype = models.CharField(db_column='UserType', max_length=7)  # Field name made lowercase.
-    amountdonated = models.DecimalField(db_column='AmountDonated', max_digits=10, decimal_places=2, default=0)  # Field name made lowercase.
+    contactnum = models.CharField(db_column='ContactNum', max_length=11)
+    address = models.CharField(db_column='Address', max_length=50)
+    ewallet = models.DecimalField(db_column='EWallet', max_digits=10, decimal_places=2, default=0)
+    usertype = models.CharField(db_column='UserType', max_length=7)
+    amountdonated = models.DecimalField(db_column='AmountDonated', max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         managed = False
@@ -16,7 +16,8 @@ class User(AbstractUser):
 
 class Restaurant(models.Model):
     restaurantid = models.CharField(db_column='RestaurantID', primary_key=True, max_length=5)
-    ownerid = models.ForeignKey(User, db_column='OwnerID', related_name="restaurant", on_delete=models.CASCADE, limit_choices_to={'usertype': 'V'})
+    ownerid = models.ForeignKey(User, db_column='OwnerID', related_name="restaurant", on_delete=models.CASCADE,
+                                limit_choices_to={'usertype': 'V'})
     restaurantname = models.CharField(db_column='RestaurantName', max_length=25)
     description = models.CharField(db_column='Description', max_length=150)
     contactnum = models.CharField(db_column='ContactNum', max_length=11)
@@ -29,7 +30,7 @@ class Restaurant(models.Model):
 
 
 class Product(models.Model):
-    productid = models.CharField(db_column='ProductID', primary_key=True, max_length=5)
+    productid = models.AutoField(db_column='ProductID', primary_key=True)
     restaurantid = models.ForeignKey(Restaurant, db_column='RestaurantID', on_delete=models.CASCADE)
     productname = models.CharField(db_column='ProductName', max_length=20)
     productprice = models.DecimalField(db_column='ProductPrice', max_digits=10, decimal_places=2)
@@ -47,8 +48,8 @@ class Orderitem(models.Model):
     addresstodelivery = models.CharField(db_column='AddressToDelivery', max_length=50)
     deliveryfee = models.DecimalField(db_column='DeliveryFee', max_digits=2, decimal_places=0)
     status = models.CharField(db_column='Status', max_length=10)  #
-    reasonofreject = models.CharField(db_column='ReasonOfReject', max_length=20)
-    riderid = models.ForeignKey(User, db_column='RiderID', related_name="delivery", on_delete=models.PROTECT, limit_choices_to={'usertype': 'R'})
+    reasonofreject = models.CharField(db_column='ReasonOfReject', max_length=20, blank=True)
+    riderid = models.ForeignKey(User, db_column='RiderID', related_name="delivery", on_delete=models.PROTECT, limit_choices_to={'usertype': 'R'}, blank=True)
 
     class Meta:
         # managed = False
@@ -56,7 +57,7 @@ class Orderitem(models.Model):
 
 
 class Orderproduct(models.Model):
-    orderproductid = models.CharField(db_column='ID', primary_key=True, max_length=5)
+    orderproductid = models.AutoField(db_column='ID', primary_key=True)
     orderid = models.ForeignKey(Orderitem, db_column='OrderID', on_delete=models.CASCADE)
     productid = models.ForeignKey(Product, db_column='ProductID', on_delete=models.CASCADE)
     amount = models.DecimalField(db_column='Amount', max_digits=10, decimal_places=2)
