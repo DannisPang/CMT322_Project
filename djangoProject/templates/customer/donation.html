@@ -10,6 +10,11 @@
 					$("#other-value").prop("disabled", true);	
 				}
 			});
+
+			$('#donate-btn').click(function (){
+			    if(!confirm("Confirm donate?"))
+			        return false;
+            })
 		});
 	</script>
     {% endblock %}
@@ -34,7 +39,7 @@
 			<P>Please support us to provide food to those most in need to fulfil their basic needs. Together we can make a difference in their lives!</P><hr>
 			<h4>Select Donation Amount</h4>
 
-			<form action="{% url 'make_donation' %}" method="post">
+			<form action="{% url 'donation' %}" method="post">
                 {% csrf_token %}
 				<div class="container">
 					<div class="row justify-content-center">
@@ -57,7 +62,7 @@
 					</div>
 				</div>
 				
-				<input class="btn btn-primary" type="submit" value="Next">
+				<input class="btn btn-primary" id="donate-btn" type="submit" value="Donate">
 			</form>
 		</div>	
 </main>	

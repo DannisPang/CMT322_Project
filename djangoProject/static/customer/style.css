@@ -58,8 +58,17 @@ form {
 	margin: .5rem 0;
 }
 
-.btn:hover {
+.remove-btn, .del-comment-btn {
+	background-color: #42226d;
+	padding: .2rem .5rem;
+}
+
+.btn:hover, .remove-btn:hover, .del-comment-btn:hover {
 	background-color: #6E48AA;
+}
+
+.remove-btn > span, .del-comment-btn {
+	color: #FFFFFF;
 }
 
 .text-input {
