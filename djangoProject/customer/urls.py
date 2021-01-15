@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from .admin import admin
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -17,6 +16,5 @@ urlpatterns = [
     path('ordering/add/<str:restaurant_id>/<str:product_id>', views.add_item_to_cart, name="add_cart"),
     path('ordering/update/<str:product_id>/<int:qty>', views.update_cart_quantity, name="update_cart"),
     path('ordering/del/<str:restaurant_id>/<str:review_id>', views.delete_review, name="delete_review"),
-    path('reorder/<str:order_id>', views.reorder, name="reorder"),
-    path('admin', admin.site.urls)
+    path('reorder/<str:order_id>', views.reorder, name="reorder")
 ]
