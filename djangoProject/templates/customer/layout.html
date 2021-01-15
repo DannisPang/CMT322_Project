@@ -48,7 +48,7 @@
 				  <li class="nav-item {% if request.path == index_url %} active {%endif%}">
 				    <a class="nav-link" href="{% url 'index' %}">Main</a>
 				  </li>
-                {% if user.usertype != 'A' %}
+                {% if user.usertype != 'Admin' %}
 				  <li class="nav-item {% if request.path == donation_url %} active {%endif%}">
 				    <a class="nav-link" href="{% url 'donation' %}">Donate</a>
 				  </li>
@@ -60,7 +60,7 @@
 				  <li class="nav-item {% if request.path == cart_url %} active {%endif%}">
 				    <a class="nav-link" id="cart-link" href="{{ cart_url }}">Cart</a>
 				  </li>
-                    {% if request.user.usertype == 'A' %}
+                    {% if request.user.usertype == 'Admin' %}
                         <li class="nav-item">
 				    <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
 				  </li>

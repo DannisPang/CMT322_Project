@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -87,6 +87,18 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': 'localhost',
+        'PORT': '',
+    }
+}'''
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'foodmarket',
+        'USER': 'foodmarketadmin@foodmarket-mariadb',
+        'PASSWORD': 'Admin@foodmarket123',
+        'HOST': 'foodmarket-mariadb.mariadb.database.azure.com',
         'PORT': '',
     }
 }
