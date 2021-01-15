@@ -123,7 +123,7 @@
 					//Accept Decline button
 					echo "<div class='col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2 text-center'>";
 					echo "<p class='OrderTotal'>Total: RM". $totalOrder ."</p>";
-					echo "<form action='order-manager.php' method='post'><input type='hidden' name='OrdID' value='". $row_order['OrderID'] ."'><input class='btn btn-outline-secondary margin' type='submit' name='action' value='Picked Up'></form></div></div></div>";
+					echo "<form action='order-manager.php' method='post'><input type='hidden' name='OrdID' value='". $row_order['OrderID'] ."'></form></div></div></div>";
 					
 				}
 			}
