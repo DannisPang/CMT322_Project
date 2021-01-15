@@ -1,8 +1,8 @@
 $(document).ready(function () {
 
-        $('.add-cart').click(function () {
+        $('.add-cart').click( function () {
             $.post(`add/${$(this).data('restaurantid')}/${$(this).data('productid')}`,
-                function(data) {
+                 function(data) {
                     if(data === 'Cannot add item from different vendors.'){
                         alert(data)
                     } else {

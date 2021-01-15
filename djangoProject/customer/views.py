@@ -10,6 +10,7 @@ from datetime import datetime
 from django.contrib import messages
 from decimal import Decimal
 import json
+import requests
 
 
 def index(request):
@@ -31,8 +32,14 @@ def login_view(request):
         # Check if authentication is successful
         if user is not None:
             login(request, user)
-            initialize_session(request)
-            return HttpResponseRedirect(reverse('index'))
+            if user.usertype == 'Rider' or user.usertype == 'Vendor':
+                r = requests.post('http://localhost/cmt322_project/ResMainPage.php', data={"userid": user.id})
+                logout_view(request)
+                return HttpResponse(r)
+
+            else:
+                initialize_session(request)
+                return HttpResponseRedirect(reverse('index'))
         else:
             messages.error(request, "Invalid username or password.", "alert alert-danger")
             return render(request, "customer/login.html")
@@ -79,11 +86,15 @@ def register_view(request):
             user.save()
         except IntegrityError as e:
             print(e)
-            messages.error(request, "Email address already taken.", "alert alert-danger")
+            messages.error(request, "Username already taken.", "alert alert-danger")
             return render(request, "customer/register.html")
-        login(request, user)
-        initialize_session(request)
-        return HttpResponseRedirect(reverse("index"))
+
+        if user.usertype == 'Rider' or user.usertype == 'Vendor':
+            r = requests.post('http://localhost/cmt322_project/ResMainPage.php', data={"userid": user.id})
+            return HttpResponse(r)
+        else:
+            initialize_session(request)
+            return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "customer/register.html")
 
