@@ -1,6 +1,6 @@
 <?php
 
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 
 if($_POST['action']== 'Accept'){
     $stmt = $conn->prepare("UPDATE orderitem SET Status=? WHERE OrderID=?");
@@ -11,7 +11,7 @@ if($_POST['action']== 'Accept'){
     //        2 is declined
     //        3 is pickedUp/delivering
     //        4 is completed
-    $status = '1';
+    $status = 'Accepted';
     $OrderID = $_POST['OrdID'];
 
     $stmt->execute();
@@ -27,7 +27,7 @@ if($_POST['action']== 'Accept'){
     $stmt = $conn->prepare("UPDATE orderitem SET Status=? WHERE OrderID=?");
     $stmt->bind_param("ss", $status, $OrderID);
 
-    $status = '2';
+    $status = 'Declined';
     $OrderID = $_POST['OrdID'];
 
     $stmt->execute();
@@ -43,7 +43,7 @@ if($_POST['action']== 'Accept'){
     $stmt = $conn->prepare("UPDATE orderitem SET Status=? WHERE OrderID=?");
     $stmt->bind_param("ss", $status, $OrderID);
 
-    $status = '3';
+    $status = 'Delivering';
     $OrderID = $_POST['OrdID'];
 
     $stmt->execute();

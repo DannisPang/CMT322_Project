@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 //check if the form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     //check if the file was uploaded without errors
@@ -32,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     //prepare sql query to insert data and path to DB 
                     echo $ProdName . "<br>";
                     echo $ProdPrice . "<br>";
-                    $stmt = $conn->prepare("INSERT INTO prod (RestaurantID, ProductName, ProductPrice, ProductPic) VALUES (?, ?, ?, ?)");
+                    $stmt = $conn->prepare("INSERT INTO product (RestaurantID, ProductName, ProductPrice, ProductPic) VALUES (?, ?, ?, ?)");
                     $stmt->bind_param("ssss", $ResID, $ProductName, $ProductPrice, $ImgPath);
                     $ProductName = $_POST["ProductName"];
                     $ProductPrice = $_POST["ProductPrice"];

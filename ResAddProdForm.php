@@ -1,5 +1,5 @@
 <?php
-    include_once "dbh.inc.php";
+    include_once "dbh2.inc.php";
     session_start();
 ?>
 

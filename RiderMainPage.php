@@ -47,9 +47,9 @@
 				<div class="card-body">
                     <h4 class="card-title">Rides Completed</h4>
                     <?php
-                        include_once "dbh.inc.php";
-                        $RiderID = "3";
-                        $query = "SELECT * FROM orderitem WHERE RiderID='".$RiderID."' AND Status='4'";
+                        include_once "dbh2.inc.php";
+                        $RiderID = "5";
+                        $query = "SELECT * FROM orderitem WHERE RiderID='".$RiderID."' AND Status='Completed'";
                         $rides = mysqli_query($conn, $query);
                         $numofRides = mysqli_num_rows($rides);
                         echo "<p class='card-text'>You have completed ". $numofRides . " rides this month.</p>";
@@ -63,9 +63,8 @@
 				<div class="card-body">
                     <h4 class="card-title">Total Earned this Month</h4>
                     <?php
-                        include_once "dbh.inc.php";
-                        $RiderID = "3";
-                        $query = "SELECT * FROM orderitem WHERE RiderID='".$RiderID."' AND Status='4'";
+                        
+                        $query = "SELECT * FROM orderitem WHERE RiderID='".$RiderID."' AND Status='Completed'";
                         $rides = mysqli_query($conn, $query);
                         $numofRides = mysqli_num_rows($rides);
                         $totalEarned = 0;
@@ -88,7 +87,7 @@
 <div class="container-fluid padding">
     <h2 class="orderlistheader">Orders to be delivered</h2>
     <?php
-        $query = "SELECT * FROM orderitem WHERE Status='1'";
+        $query = "SELECT * FROM orderitem WHERE Status='Accepted'";
         $result = mysqli_query($conn, $query);
         $numofOrders = mysqli_num_rows($result);
 
@@ -105,7 +104,7 @@
                 //query restaurant name
                 //pick up address
                 //res contact no.
-                $queryClient = "SELECT UserName, ContactNum FROM user WHERE UserID='".$row['UserID']."'";
+                $queryClient = "SELECT UserName, ContactNum FROM auth_user WHERE id='".$row['UserID']."'";
                 $ClientResult = mysqli_fetch_assoc(mysqli_query($conn, $queryClient));
                 echo "<a><b>Client: </b>".$ClientResult['UserName']."</a><br>";
                 echo "<a><b>Contact No.: </b>".$ClientResult['ContactNum']."</a><br>";

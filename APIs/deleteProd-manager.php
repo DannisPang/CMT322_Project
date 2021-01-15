@@ -1,10 +1,10 @@
 <?php
 
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 
 if($_POST['action'] == 'Yes'){
     
-    $stmt = $conn->prepare("DELETE FROM prod WHERE ProductID=?");
+    $stmt = $conn->prepare("DELETE FROM product WHERE ProductID=?");
     $stmt->bind_param("s", $prodID);
     
     $prodID = $_POST['ProdId'];

@@ -1,5 +1,5 @@
 <?php
-	include_once "dbh.inc.php";
+	include_once "dbh2.inc.php";
 	session_start();
 ?>
 
@@ -51,7 +51,7 @@
 				if($resultCheck > 0){
 					while ($row = mysqli_fetch_assoc($result)){
 						echo "<h2 class='RestaurantName' style='padding-top:4rem;'>".$row['RestaurantName']."</h2>";
-						echo "<p class='RestaurantDescription'>".$row['ResDescription']."</p>";
+						echo "<p class='RestaurantDescription'>".$row['Description']."</p>";
 					}
 				}else{
 					echo "No Product with the ID: " . $ResID;
@@ -90,7 +90,7 @@
         die("Connection failed:". $conn-> connect_error);
     }
         $resid = 'R001';
-        $sql = "SELECT * from prod";
+        $sql = "SELECT * from product";
         $result = mysqli_query($conn, $sql);
         $resultCheck = mysqli_num_rows($result);
 

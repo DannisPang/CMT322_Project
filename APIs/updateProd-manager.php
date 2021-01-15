@@ -1,10 +1,10 @@
 <?php
 
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 
 if($_POST['action'] == 'Yes'){
     
-    $stmt = $conn->prepare("UPDATE prod SET ProductName=?, ProductPrice=? WHERE ProductID=?");
+    $stmt = $conn->prepare("UPDATE product SET ProductName=?, ProductPrice=? WHERE ProductID=?");
     $stmt->bind_param("sss", $prodName, $prodPrice, $prodID);
     
     $prodID = $_POST['ProdId'];

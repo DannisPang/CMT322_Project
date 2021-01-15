@@ -1,5 +1,5 @@
 <?php
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ include_once "dbh.inc.php";
                 echo "<p>Edit the description of the Restaurant?</p>";
                 echo "<form action='editResDesc-manager.php' method='post' enctype='multipart/form-data'>";
                 echo "<label for='RestaurantName'>Restaurant Name:</label><input type='text' name='RestaurantName' value='".$row['RestaurantName']."'><br>";
-                echo "<label for='RestaurantDesc'>Restaurant Description:</label><input type='text' name='ResDescription' value='".$row['ResDescription']."'><br>";
+                echo "<label for='RestaurantDesc'>Restaurant Description:</label><input type='text' name='ResDescription' value='".$row['Description']."'><br>";
                 echo "<input type='hidden' name='ResID' value='".$row['RestaurantID']."'><input type='submit' name='action' value='Yes'><input type='submit' name='action' value='No'></form>";
             }
         }else{

@@ -1,5 +1,5 @@
 <?php
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ include_once "dbh.inc.php";
     
     <?php
         $prodID = $_POST['ProdId'];
-        $query = "SELECT * from prod WHERE ProductID=" . $prodID;
+        $query = "SELECT * from product WHERE ProductID=" . $prodID;
         $result = mysqli_query($conn, $query);
         $conn->close();
         $resultCheck = mysqli_num_rows($result);

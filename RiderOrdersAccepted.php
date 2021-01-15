@@ -56,10 +56,10 @@
     <hr>
     <h2 class="orderlistheader">Orders Accepted</h2>
     <?php
-        include_once "dbh.inc.php";
-        $RiderID = "3";
+        include_once "dbh2.inc.php";
+        $RiderID = "5";
 
-        $query = "SELECT * FROM orderitem WHERE Status='3' and RiderID='".$RiderID."'";
+        $query = "SELECT * FROM orderitem WHERE Status='Delivering' and RiderID='".$RiderID."'";
         $result = mysqli_query($conn, $query);
         $numofOrders = mysqli_num_rows($result);
 
@@ -76,7 +76,7 @@
                 //query restaurant name
                 //pick up address
                 //res contact no.
-                $queryClient = "SELECT UserName, ContactNum FROM user WHERE UserID='".$row['UserID']."'";
+                $queryClient = "SELECT UserName, ContactNum FROM auth_user WHERE id='".$row['UserID']."'";
                 $ClientResult = mysqli_fetch_assoc(mysqli_query($conn, $queryClient));
                 echo "<a><b>Client: </b>".$ClientResult['UserName']."</a><br>";
                 echo "<a><b>Contact No.: </b>".$ClientResult['ContactNum']."</a><br>";

@@ -37,7 +37,7 @@
 <!-- Jumbotron - for total orders -->
 <?php
 
-	include_once "dbh.inc.php";
+	include_once "dbh2.inc.php";
 
 	$ResID = "R001";
 	$query1 = "SELECT RestaurantName from restaurant WHERE RestaurantID='" . $ResID . "'";
@@ -53,7 +53,7 @@
 		
 		$pendingOrder = 0;
 		while ($rownum = mysqli_fetch_assoc($orders)){
-			if ($rownum['Status'] == 0){
+			if ($rownum['Status'] == 'Pending'){
 				$pendingOrder++;
 			}
 		}
@@ -62,7 +62,7 @@
 		
 		echo "<div class='container-fluid padding'><h2 class='orderlistheader'>Orders Placed</h2>";
 		while ($row_order = mysqli_fetch_assoc($orders)){
-			if ($row_order['Status'] == 0){
+			if ($row_order['Status'] == 'Pending'){
 				echo "<div class='card shadow' style='box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19); '><div class='row'><div class='col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10'>";
 				echo "<h3 class='OrderHeader'>Order #" . $row_order['OrderID'] . "</h3>";
 				$queryOrderProd = "SELECT * from orderproduct WHERE OrderID='". $row_order['OrderID'] ."'";
@@ -72,7 +72,7 @@
 				if ($numofProd > 0){
 					
 					while($row_Prod = mysqli_fetch_assoc($orderlist)){
-						$queryProdName = "SELECT ProductName, ProductPrice FROM prod WHERE ProductID='".$row_Prod['ProductID']."'";
+						$queryProdName = "SELECT ProductName, ProductPrice FROM product WHERE ProductID='".$row_Prod['ProductID']."'";
 						$prodInfo = mysqli_fetch_assoc(mysqli_query($conn, $queryProdName));
 						echo "<a style=' font-size:1.5rem; padding-left:1.6rem;'>" . $prodInfo['ProductName'] . " x" . $row_Prod['Amount'] . "</a>";
 						$totalOrder = $totalOrder + ((int)$prodInfo['ProductPrice'] * (int)$row_Prod['Amount']);
@@ -80,7 +80,7 @@
 					
 					
 					//query client info
-					$queryClient = "SELECT UserName, ContactNum FROM user WHERE UserID='". $row_order['UserID'] ."'";
+					$queryClient = "SELECT UserName, ContactNum FROM auth_user WHERE id='". $row_order['UserID'] ."'";
 					$clientInfo = mysqli_fetch_assoc(mysqli_query($conn, $queryClient));
 					echo "<p class='cardContent'><a style='font-size: 1.2rem;'><b>Client:</b> " . $clientInfo['UserName'] . "</a><br>";
 					echo "<a style='font-size: 1.2rem;'><b>Contact No.:</b> " . $clientInfo['ContactNum'] . "</a></p></div>";
@@ -98,7 +98,7 @@
 		$orders = mysqli_query($conn, $queryOrder);
 		echo "<div class='container-fluid padding'><h2 class='orderlistheader'>Orders Accepted</h2>";
 		while ($row_order = mysqli_fetch_assoc($orders)){
-			if ($row_order['Status'] == 1){
+			if ($row_order['Status'] == 'Accepted'){
 				echo "<div class='card shadow' style='box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19); '><div class='row'><div class='col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10'>";
 				echo "<h3 class='OrderHeader'>Order #" . $row_order['OrderID'] . "</h3>";
 				$queryOrderProd = "SELECT * from orderproduct WHERE OrderID='". $row_order['OrderID'] ."'";
@@ -108,7 +108,7 @@
 				if ($numofProd > 0){
 					
 					while($row_Prod = mysqli_fetch_assoc($orderlist)){
-						$queryProdName = "SELECT ProductName, ProductPrice FROM prod WHERE ProductID='".$row_Prod['ProductID']."'";
+						$queryProdName = "SELECT ProductName, ProductPrice FROM product WHERE ProductID='".$row_Prod['ProductID']."'";
 						$prodInfo = mysqli_fetch_assoc(mysqli_query($conn, $queryProdName));
 						echo "<a style=' font-size:1.5rem; padding-left:1.6rem;'>" . $prodInfo['ProductName'] . " x" . $row_Prod['Amount'] . "</a>";
 						$totalOrder = $totalOrder + ((int)$prodInfo['ProductPrice'] * (int)$row_Prod['Amount']);
@@ -116,7 +116,7 @@
 					
 					
 					//query client info
-					$queryClient = "SELECT UserName, ContactNum FROM user WHERE UserID='". $row_order['UserID'] ."'";
+					$queryClient = "SELECT UserName, ContactNum FROM auth_user WHERE id='". $row_order['UserID'] ."'";
 					$clientInfo = mysqli_fetch_assoc(mysqli_query($conn, $queryClient));
 					echo "<p class='cardContent'><a style='font-size: 1.2rem;'><b>Client:</b> " . $clientInfo['UserName'] . "</a><br>";
 					echo "<a style='font-size: 1.2rem;'><b>Contact No.:</b> " . $clientInfo['ContactNum'] . "</a></p></div>";
@@ -133,7 +133,7 @@
 		$orders = mysqli_query($conn, $queryOrder);
 		echo "<div class='container-fluid padding'><h2 class='orderlistheader'>Orders Completed</h2>";
 		while ($row_order = mysqli_fetch_assoc($orders)){
-			if ($row_order['Status'] == 4){
+			if ($row_order['Status'] == 'Completed'){
 				echo "<div class='card shadow' style='box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19); '><div class='row'><div class='col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10'>";
 				echo "<h3 class='OrderHeader'>Order #" . $row_order['OrderID'] . "</h3>";
 				$queryOrderProd = "SELECT * from orderproduct WHERE OrderID='". $row_order['OrderID'] ."'";
@@ -143,7 +143,7 @@
 				if ($numofProd > 0){
 					
 					while($row_Prod = mysqli_fetch_assoc($orderlist)){
-						$queryProdName = "SELECT ProductName, ProductPrice FROM prod WHERE ProductID='".$row_Prod['ProductID']."'";
+						$queryProdName = "SELECT ProductName, ProductPrice FROM product WHERE ProductID='".$row_Prod['ProductID']."'";
 						$prodInfo = mysqli_fetch_assoc(mysqli_query($conn, $queryProdName));
 						echo "<a style=' font-size:1.5rem; padding-left:1.6rem;'>" . $prodInfo['ProductName'] . " x" . $row_Prod['Amount'] . "</a>";
 						$totalOrder = $totalOrder + ((int)$prodInfo['ProductPrice'] * (int)$row_Prod['Amount']);
@@ -151,7 +151,7 @@
 					
 					
 					//query client info
-					$queryClient = "SELECT UserName, ContactNum FROM user WHERE UserID='". $row_order['UserID'] ."'";
+					$queryClient = "SELECT UserName, ContactNum FROM auth_user WHERE id='". $row_order['UserID'] ."'";
 					$clientInfo = mysqli_fetch_assoc(mysqli_query($conn, $queryClient));
 					echo "<p class='cardContent'><a style='font-size: 1.2rem;'><b>Client:</b> " . $clientInfo['UserName'] . "</a><br>";
 					echo "<a style='font-size: 1.2rem;'><b>Contact No.:</b> " . $clientInfo['ContactNum'] . "</a></p></div>";

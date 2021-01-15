@@ -1,10 +1,10 @@
 <?php
 
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 
 if($_POST['action'] == 'Yes'){
     
-    $stmt = $conn->prepare("UPDATE restaurant SET RestaurantName=?, ResDescription=? WHERE RestaurantID=?");
+    $stmt = $conn->prepare("UPDATE restaurant SET RestaurantName=?, Description=? WHERE RestaurantID=?");
     $stmt->bind_param("sss", $ResName, $ResDesc, $ResID);
     
     $ResID = $_POST['ResID'];

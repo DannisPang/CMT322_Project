@@ -1,10 +1,10 @@
 <?php
 
-include_once "dbh.inc.php";
+include_once "dbh2.inc.php";
 
 if($_POST['action']== 'Remove User'){
     
-    $stmt = $conn->prepare("DELETE from user WHERE UserID=?");
+    $stmt = $conn->prepare("DELETE from auth_user WHERE id=?");
     $stmt->bind_param("s", $UsrID);
    
     $UsrID = $_POST['UsrID'];
@@ -27,7 +27,7 @@ if($_POST['action']== 'Remove User'){
     $stmt->execute();
     
 
-    $stmt = $conn->prepare("DELETE from user WHERE UserID=?");
+    $stmt = $conn->prepare("DELETE from auth_user WHERE id=?");
     $stmt->bind_param("s", $UsrID);
     $UsrID = $_POST['UsrID'];
     
@@ -41,7 +41,7 @@ if($_POST['action']== 'Remove User'){
 
 }else if($_POST['action']== 'Remove Rider'){
     
-    $stmt = $conn->prepare("DELETE from user WHERE UserID=?");
+    $stmt = $conn->prepare("DELETE from auth_user WHERE id=?");
     $stmt->bind_param("s", $UsrID);
     
     $UsrID = $_POST['UsrID'];
