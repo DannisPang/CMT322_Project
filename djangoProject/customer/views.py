@@ -37,6 +37,9 @@ def login_view(request):
                 logout_view(request)
                 return HttpResponse(r)
 
+            if user.usertype == 'Admin':
+                return HttpResponseRedirect('http://localhost/cmt322_project/AdminMainPage.php')
+
             else:
                 initialize_session(request)
                 return HttpResponseRedirect(reverse('index'))
